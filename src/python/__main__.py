@@ -19,11 +19,12 @@ def main() -> None:
     processing = []
 
     files = [
-        './resources/00-tiny.txt',
-        './resources/01-small.txt',
-        './resources/02-medium.txt',
-        './resources/03-big.txt',
-        './resources/04-huge.txt',
+        '../generate_palindrome/cmake-build-release/00-tiny.txt',
+        '../generate_palindrome/cmake-build-release/01-small.txt',
+        '../generate_palindrome/cmake-build-release/02-medium.txt',
+        '../generate_palindrome/cmake-build-release/03-big.txt',
+        '../generate_palindrome/cmake-build-release/04-huge.txt',
+        '../generate_palindrome/cmake-build-release/05-immense.txt',
     ]
 
     for file in files:
