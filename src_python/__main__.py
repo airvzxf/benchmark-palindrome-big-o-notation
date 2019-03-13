@@ -12,33 +12,50 @@ def main() -> None:
 
     :rtype: None
     """
-    from timeit import timeit
+    from multiprocessing import Process
+    from palindrome.full import full
+    from palindrome.half import half
+
+    processing = []
 
     files = [
+        './resources/00-tiny.txt',
         './resources/01-small.txt',
-        # './resources/02-medium.txt',
-        # './resources/03-big.txt',
-        # './resources/04-huge.txt',
+        './resources/02-medium.txt',
+        './resources/03-big.txt',
+        './resources/04-huge.txt',
     ]
 
     for file in files:
         with open(file) as phrase_file:
             phrase_full = phrase_file.read()
+            phrase_full_size = len(phrase_full)
 
         with open(file) as phrase_file:
             phrase_half = phrase_file.read()
+            phrase_half_size = len(phrase_half)
 
-        print('File: %s\n' % file)
+        processing.append(
+            Process(
+                target=full,
+                args=(phrase_full,),
+                name='Full_%i' % phrase_full_size
+            )
+        )
+        processing[-1].start()
 
-        print('Phrase for full. Memory address: %s' % hex(id(phrase_full)))
-        print('Phrase for half. Memory address: %s\n' % hex(id(phrase_half)))
+        processing.append(
+            Process(
+                target=half,
+                args=(phrase_half,),
+                name='Half_%i' % phrase_half_size
+            )
+        )
+        processing[-1].start()
 
-        print('Size: %i characters.\n' % int(len(phrase_full)))
-
-        print('half: %f s' % timeit("half('" + phrase_half + "')", setup="from palindrome.half import half"))
-        print('full: %f s' % timeit("full('" + phrase_full + "')", setup="from palindrome.full import full"))
-
-        print('\n\n')
+        for processor in processing:
+            # processor.start()
+            processor.join()
 
     return None
 
